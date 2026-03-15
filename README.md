@@ -1,2 +1,2 @@
 # compagnion
-Client Brain that supports
+A Friend that Learns and is able to integrate with cloud absed LLMs
