@@ -1,2 +1,2 @@
-# compagnion
-A Friend that Learns and is able to integrate with cloud absed LLMs & MCP servers
+# brainmaster
+A Mosular Brain that acts as a user -> sys interface. it consumes given MCPs, plans, executes and interacts witht the user 
