@@ -1,3 +1,9 @@
+# brainmaster
+
+A modular Brain that acts as a user–sys interface. It consumes given MCPs, plans, executes and interacts with the user — fully local (no cloud-based LLM included, but extensible). Pls post issue requests if you like it.
+
+---
+
 # brn — Brain Graph & Orchestration
 
 The **brn** package provides the Brain graph system: goal classification, long/short-term memory, relay-case execution, and simulation orchestration. It sits between the **Thalamus** (orchestrator) and domain managers (Guard, QBrain, etc.).
