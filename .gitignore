@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# Local
+*.duckdb
+.env
+*.log

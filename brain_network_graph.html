@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brain Architecture – Component Network</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --accent: #58a6ff;
+      --accent-dim: #388bfd66;
+      --node-core: #7ee787;
+      --node-memory: #d2a8ff;
+      --node-io: #ffa657;
+      --node-schema: #79c0ff;
+      --edge: #30363d;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(180deg, var(--bg) 0%, transparent 100%);
+      z-index: 10;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.02em;
+    }
+    .subtitle { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem; }
+    #graph { width: 100vw; height: 100vh; }
+    .node {
+      cursor: pointer;
+      transition: filter 0.2s;
+    }
+    .node:hover { filter: brightness(1.3); }
+    .node-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      fill: var(--text);
+      pointer-events: none;
+      text-anchor: middle;
+    }
+    .node-task {
+      font-size: 9px;
+      fill: var(--text-dim);
+      text-anchor: middle;
+    }
+    .link {
+      stroke: var(--edge);
+      stroke-opacity: 0.6;
+      stroke-width: 1.5;
+    }
+    .link-label { font-size: 8px; fill: var(--text-dim); }
+    .tooltip {
+      position: fixed;
+      padding: 0.6rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--edge);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      max-width: 320px;
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .tooltip-title { font-weight: 600; color: var(--accent); margin-bottom: 0.3rem; }
+    .tooltip-task { color: var(--text-dim); line-height: 1.4; }
+    .legend {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--edge);
+      border-radius: 6px;
+      padding: 0.6rem 1rem;
+      font-size: 0.7rem;
+      z-index: 10;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; margin: 0.2rem 0; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Brain Architecture</h1>
+    <p class="subtitle">Component network – drag nodes, hover for details</p>
+  </header>
+  <div id="graph"></div>
+  <div class="tooltip" id="tooltip" style="display:none"></div>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot" style="background:#7ee787"></span> Core</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#d2a8ff"></span> Memory</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#ffa657"></span> I/O</div>
+    <div class="legend-item"><span class="legend-dot" style="background:#79c0ff"></span> Schema/Utils</div>
+  </div>
+
+  <script>
+    (function() {
+      const components = [
+        { id: "Brain", task: "Hybrid graph+db brain; classifies goals, executes relay cases", group: "core" },
+        { id: "BrainClassifier", task: "Rule+vector classifier for relay-case goals", group: "core" },
+        { id: "BrainExecutor", task: "Executes relay cases or requests missing data", group: "core" },
+        { id: "Thalamus", task: "High-level coordinator; handles relay payload", group: "core" },
+        { id: "SimOrchestrator", task: "Env cfg, sim execution, param scoring, sub_goal inference", group: "core" },
+        { id: "BrainHydrator", task: "Hydrates user long-term memory from QBRAIN tables", group: "memory" },
+        { id: "BrainWorkers", task: "Thread pool for non-graph heavy tasks", group: "memory" },
+        { id: "ThinkManager", task: "Suggests missing fields using graph context", group: "memory" },
+        { id: "McpPickup", task: "Fetches MCP tools from endpoints → ACTION nodes", group: "io" },
+        { id: "ReceiveUserData", task: "Calls user-entries routes → COMPONENT nodes", group: "io" },
+        { id: "Routes", task: "FastAPI POST /relay entry for Thalamus", group: "io" },
+        { id: "main", task: "Entry point: serve (uvicorn) or relay loop", group: "io" },
+        { id: "BrainGraphUtils", task: "Graph traversal: SUB_GOAL, REQUIRES edges", group: "utils" },
+        { id: "BrainSchema", task: "Node types, edge relations, GoalDecision", group: "utils" },
+        { id: "BrainOperator", task: "Stub for graph node operations", group: "utils" },
+        { id: "ThalamicEventClassifier", task: "Unified: BrainClassifier + AI fallback", group: "utils" },
+      ];
+
+      const links = [
+        { source: "Brain", target: "BrainClassifier" },
+        { source: "Brain", target: "BrainExecutor" },
+        { source: "Brain", target: "BrainHydrator" },
+        { source: "Brain", target: "BrainWorkers" },
+        { source: "Brain", target: "ThinkManager" },
+        { source: "Brain", target: "McpPickup" },
+        { source: "Brain", target: "ReceiveUserData" },
+        { source: "Brain", target: "BrainGraphUtils" },
+        { source: "Brain", target: "BrainSchema" },
+        { source: "Thalamus", target: "Brain" },
+        { source: "Thalamus", target: "SimOrchestrator" },
+        { source: "Thalamus", target: "ThalamicEventClassifier" },
+        { source: "Routes", target: "Thalamus" },
+        { source: "main", target: "Routes" },
+        { source: "SimOrchestrator", target: "Brain" },
+        { source: "BrainClassifier", target: "BrainSchema" },
+        { source: "BrainExecutor", target: "BrainSchema" },
+        { source: "ThalamicEventClassifier", target: "BrainClassifier" },
+      ];
+
+      const groupColors = { core: "#7ee787", memory: "#d2a8ff", io: "#ffa657", utils: "#79c0ff" };
+
+      const svg = d3.select("#graph").append("svg").attr("width", "100%").attr("height", "100%");
+      const g = svg.append("g");
+
+      const width = window.innerWidth, height = window.innerHeight;
+      const simulation = d3.forceSimulation(components.map(d => ({ ...d })))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(120))
+        .force("charge", d3.forceManyBody().strength(-400))
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("collision", d3.forceCollide().radius(50));
+
+      const link = g.append("g").attr("class", "links")
+        .selectAll("line")
+        .data(links)
+        .join("line")
+        .attr("class", "link");
+
+      const node = g.append("g").attr("class", "nodes")
+        .selectAll("g")
+        .data(components)
+        .join("g")
+        .attr("class", "node")
+        .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+
+      node.append("circle")
+        .attr("r", d => d.id === "Brain" ? 28 : 22)
+        .attr("fill", d => groupColors[d.group] || "#8b949e")
+        .attr("stroke", "#30363d")
+        .attr("stroke-width", 2);
+
+      node.append("text").attr("class", "node-label")
+        .attr("dy", d => d.id === "Brain" ? -32 : -26)
+        .text(d => d.id);
+
+      node.append("text").attr("class", "node-task")
+        .attr("dy", d => d.id === "Brain" ? -14 : -10)
+        .text(d => (d.task || "").slice(0, 28) + (d.task && d.task.length > 28 ? "…" : ""));
+
+      const tooltip = document.getElementById("tooltip");
+      node.on("mouseover", (ev, d) => {
+        tooltip.style.display = "block";
+        tooltip.innerHTML = `<div class="tooltip-title">${d.id}</div><div class="tooltip-task">${d.task}</div>`;
+        tooltip.style.left = (ev.pageX + 12) + "px";
+        tooltip.style.top = (ev.pageY + 12) + "px";
+      });
+      node.on("mousemove", (ev) => {
+        tooltip.style.left = (ev.pageX + 12) + "px";
+        tooltip.style.top = (ev.pageY + 12) + "px";
+      });
+      node.on("mouseout", () => { tooltip.style.display = "none"; });
+
+      function dragstarted(ev) { if (!ev.active) simulation.alphaTarget(0.3).restart(); ev.subject.fx = ev.subject.x; ev.subject.fy = ev.subject.y; }
+      function dragged(ev) { ev.subject.fx = ev.x; ev.subject.fy = ev.y; }
+      function dragended(ev) { if (!ev.active) simulation.alphaTarget(0); ev.subject.fx = null; ev.subject.fy = null; }
+
+      simulation.on("tick", () => {
+        link.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+        node.attr("transform", d => `translate(${d.x},${d.y})`);
+      });
+
+      const zoom = d3.zoom().scaleExtent([0.3, 4]).on("zoom", (ev) => g.attr("transform", ev.transform));
+      svg.call(zoom);
+    })();
+  </script>
+</body>
+</html>

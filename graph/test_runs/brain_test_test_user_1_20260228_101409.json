@@ -1,0 +1,248 @@
+{
+  "timestamp_utc": "2026-02-28T10:14:09.478135Z",
+  "user_id": "test_user_1",
+  "summary": {
+    "total_queries": 6,
+    "executed": 3,
+    "need_data": 3,
+    "errors": 0,
+    "avg_duration_ms": 0,
+    "overall_status": "success"
+  },
+  "case_struct": [
+    {
+      "case": "SET_PARAM",
+      "desc": "Create or update a simulation parameter.",
+      "req_struct": {
+        "data": {
+          "name": "string",
+          "param_type": "string",
+          "description": "string"
+        }
+      },
+      "out_struct": {
+        "status": "string",
+        "param_id": "string"
+      }
+    },
+    {
+      "case": "SET_ENV",
+      "desc": "Create or update environment settings.",
+      "req_struct": {
+        "data": {
+          "id": "string",
+          "description": "string"
+        }
+      },
+      "out_struct": {
+        "status": "string"
+      }
+    },
+    {
+      "case": "SET_METHOD",
+      "desc": "Register a computational method.",
+      "req_struct": {
+        "data": {
+          "equation": "string",
+          "description": "string"
+        }
+      },
+      "out_struct": {
+        "status": "string",
+        "method_id": "string"
+      }
+    }
+  ],
+  "qa_pairs": [
+    {
+      "index": 1,
+      "query": "create a parameter",
+      "payload": {},
+      "status": "need_data",
+      "goal_case": "SET_PARAM",
+      "duration_ms": 1,
+      "missing_fields": [
+        "name",
+        "param_type",
+        "description"
+      ],
+      "next_message": "I need more data to continue. Missing keys: name, param_type, description",
+      "execution_debug": {
+        "trace_id": "brain_exec_e8e2a33123",
+        "started_ms": 1772273649437,
+        "finished_ms": 1772273649437,
+        "duration_ms": 0,
+        "required_keys": [
+          "name",
+          "param_type",
+          "description"
+        ],
+        "resolved_keys": [],
+        "missing_keys": [
+          "name",
+          "param_type",
+          "description"
+        ],
+        "callable_ready": false
+      },
+      "error": ""
+    },
+    {
+      "index": 2,
+      "query": "name: alpha",
+      "payload": {},
+      "status": "need_data",
+      "goal_case": "SET_PARAM",
+      "duration_ms": 1,
+      "missing_fields": [
+        "param_type",
+        "description"
+      ],
+      "next_message": "I need more data to continue. Missing keys: param_type, description",
+      "execution_debug": {
+        "trace_id": "brain_exec_089373ca84",
+        "started_ms": 1772273649440,
+        "finished_ms": 1772273649440,
+        "duration_ms": 0,
+        "required_keys": [
+          "name",
+          "param_type",
+          "description"
+        ],
+        "resolved_keys": [
+          "name"
+        ],
+        "missing_keys": [
+          "param_type",
+          "description"
+        ],
+        "callable_ready": false
+      },
+      "error": ""
+    },
+    {
+      "index": 3,
+      "query": "param_type: float",
+      "payload": {},
+      "status": "need_data",
+      "goal_case": "SET_PARAM",
+      "duration_ms": 1,
+      "missing_fields": [
+        "description"
+      ],
+      "next_message": "I need more data to continue. Missing keys: description",
+      "execution_debug": {
+        "trace_id": "brain_exec_91ae60f1ab",
+        "started_ms": 1772273649444,
+        "finished_ms": 1772273649444,
+        "duration_ms": 0,
+        "required_keys": [
+          "name",
+          "param_type",
+          "description"
+        ],
+        "resolved_keys": [
+          "name",
+          "param_type"
+        ],
+        "missing_keys": [
+          "description"
+        ],
+        "callable_ready": false
+      },
+      "error": ""
+    },
+    {
+      "index": 4,
+      "query": "description: learning rate for optimizer",
+      "payload": {},
+      "status": "executed",
+      "goal_case": "SET_PARAM",
+      "duration_ms": 1,
+      "missing_fields": [],
+      "next_message": "Execution completed.",
+      "execution_debug": {
+        "trace_id": "brain_exec_060fc5caeb",
+        "started_ms": 1772273649445,
+        "finished_ms": 1772273649445,
+        "duration_ms": 0,
+        "required_keys": [
+          "name",
+          "param_type",
+          "description"
+        ],
+        "resolved_keys": [
+          "description",
+          "name",
+          "param_type"
+        ],
+        "missing_keys": [],
+        "callable_ready": true,
+        "stage": "post_call_success"
+      },
+      "error": ""
+    },
+    {
+      "index": 5,
+      "query": "create env",
+      "payload": {
+        "id": "env_test_1",
+        "description": "test environment"
+      },
+      "status": "executed",
+      "goal_case": "SET_ENV",
+      "duration_ms": 1,
+      "missing_fields": [],
+      "next_message": "Execution completed.",
+      "execution_debug": {
+        "trace_id": "brain_exec_b820ac2a43",
+        "started_ms": 1772273649448,
+        "finished_ms": 1772273649448,
+        "duration_ms": 0,
+        "required_keys": [
+          "id",
+          "description"
+        ],
+        "resolved_keys": [
+          "description",
+          "id"
+        ],
+        "missing_keys": [],
+        "callable_ready": true,
+        "stage": "post_call_success"
+      },
+      "error": ""
+    },
+    {
+      "index": 6,
+      "query": "add a method",
+      "payload": {
+        "equation": "y=x+1",
+        "description": "simple linear rule"
+      },
+      "status": "executed",
+      "goal_case": "SET_METHOD",
+      "duration_ms": 0,
+      "missing_fields": [],
+      "next_message": "Execution completed.",
+      "execution_debug": {
+        "trace_id": "brain_exec_460307e3d9",
+        "started_ms": 1772273649452,
+        "finished_ms": 1772273649452,
+        "duration_ms": 0,
+        "required_keys": [
+          "equation",
+          "description"
+        ],
+        "resolved_keys": [
+          "description",
+          "equation"
+        ],
+        "missing_keys": [],
+        "callable_ready": true,
+        "stage": "post_call_success"
+      },
+      "error": ""
+    }
+  ]
+}
