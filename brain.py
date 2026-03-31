@@ -20,6 +20,7 @@ from brain_schema import BrainEdgeRel, BrainNodeType, DataCollectionResult, Goal
 from brain_utils import normalize_user_id
 from brain_workers import BrainWorkers
 from graph.local_graph_utils import GUtils
+from graph.pathway import build_and_run_pathways, should_build_pathways
 from pickup import McpPickup
 from receive_user_data import ReceiveUserData
 from think_manager import ThinkManager
@@ -497,9 +498,37 @@ class Brain(GUtils):
         user_query: str,
         user_payload: Optional[Dict[str, Any]] = None,
         request_id: Optional[str] = None,
+        data_type: Optional[str] = None,
     ) -> Dict[str, Any]:
         print("execute_or_ask...")
         self.ingest_input(user_query, content_type="text", request_id=request_id)
+
+        # ------------------------------------------------------------------
+        # Issue #1 & #2: Pathway Creation + Execution
+        # Trigger when type=None AND no PATHWAY nodes exist for this user.
+        # ------------------------------------------------------------------
+        if data_type is None and should_build_pathways(self.G, self.user_id):
+            try:
+                resolved_fields: Dict[str, Any] = dict(user_payload or {})
+                pathway_result = build_and_run_pathways(
+                    G=self.G,
+                    user_id=self.user_id,
+                    add_node_fn=self.add_node,
+                    add_edge_fn=lambda src, trt, attrs: self.add_edge(src=src, trt=trt, attrs=attrs),
+                    resolved_fields=resolved_fields,
+                    query=user_query,
+                )
+                if pathway_result.get("pathway_nodes"):
+                    self._add_short_term(
+                        role="assistant",
+                        message=str(pathway_result.get("next_message") or ""),
+                        request_id=request_id,
+                    )
+                    print("execute_or_ask... done (pathway)")
+                    return pathway_result
+            except Exception as exc:
+                print(f"execute_or_ask: pathway build/run warning: {exc}")
+
         decision = self.classify_goal(user_query)
         collect = self.collect_required_data(decision, user_payload=user_payload)
         suggestions: Dict[str, Any] = {}
@@ -556,6 +585,7 @@ class Brain(GUtils):
         self._add_short_term(role="assistant", message=str(result.get("next_message") or ""), request_id=request_id)
         print("execute_or_ask... done")
         return result
+
 
     def process_file_result(
         self,
