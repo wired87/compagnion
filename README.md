@@ -4,6 +4,123 @@ A modular Brain that acts as a user–sys interface. It consumes given MCPs, pla
 
 ---
 
+## 🧠 What Is Brainmaster? (Plain English)
+
+Imagine you have a very organised personal assistant who:
+
+- **Remembers everything** about you and your previous work — your files, settings, goals, and history.
+- **Understands what you want** even if you say it in different ways — like "run my simulation" or "start the test environment", it figures out you mean the same thing.
+- **Figures out what it needs** before acting — if something is missing, it asks you just for that missing piece instead of giving up.
+- **Takes action** by connecting to your tools and services, calling the right one at the right time.
+- **Runs simulations** on your behalf, scores the results, and tells you what to change to get closer to your goal.
+
+This "assistant" is Brainmaster. It is a **locally running AI brain** that sits between you and your tools, helping you orchestrate complex workflows without needing to manually wire everything together.
+
+---
+
+## 🗺️ Project Pathway (Non-Technical Overview)
+
+Below is the journey of a request — from what you type to what happens behind the scenes:
+
+```
+You type a message
+       │
+       ▼
+┌─────────────────────────────────────────────────────┐
+│  Step 1 — Understand your intent                    │
+│                                                     │
+│  Brainmaster reads your message and classifies it:  │
+│  "Is this a chat? A simulation request? A file      │
+│   upload? Something else?"                          │
+│                                                     │
+│  It uses a mix of keyword rules, similarity         │
+│  matching, and an optional local AI model.          │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│  Step 2 — Recall what it already knows about you    │
+│                                                     │
+│  It looks up your stored data: parameters, files,   │
+│  environment configs, and previous session history. │
+│  Everything is kept locally on your machine.        │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│  Step 3 — Check if it has everything it needs       │
+│                                                     │
+│  Does it have all the required inputs for           │
+│  the task? If yes → proceed. If no → ask you        │
+│  only for the missing piece, and suggest likely     │
+│  values based on your history.                      │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│  Step 4 — Execute the task                          │
+│                                                     │
+│  It calls the right tool or service (via MCP),      │
+│  runs your simulation, processes your file, or      │
+│  answers your question.                             │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────┐
+│  Step 5 — Report and remember                       │
+│                                                     │
+│  Results are returned to you. The outcome, the      │
+│  parameters used, and any adjustments are stored    │
+│  so future requests are smarter and faster.         │
+└─────────────────────────────────────────────────────┘
+```
+
+---
+
+## ✨ What Can You Do With Brainmaster?
+
+| Possibility | What it means in plain terms |
+|-------------|------------------------------|
+| **Run simulations** | Tell the system your goal ("reach equilibrium at value X") and let it run, score, and refine the simulation parameters automatically until the goal is met. |
+| **Connect your own tools** | Plug in any service that speaks the MCP protocol. Brainmaster will discover the tools automatically and learn how to call them. |
+| **Ask questions in natural language** | Instead of writing code or filling forms, just describe what you want. The brain classifies your request and routes it correctly. |
+| **Let it remember your work** | Every session, environment, file, and parameter you ever used is stored. The brain uses this history to pre-fill fields and make smarter suggestions. |
+| **Get guided through missing data** | If the brain can't act yet because information is missing, it asks you only the relevant questions — and suggests likely answers from your history. |
+| **Keep everything local** | No data leaves your machine unless you explicitly connect a remote service. The AI classification, memory, and execution all run on your hardware. |
+| **Extend with any language model** | The LLM slot is optional and pluggable. You can connect any local or remote model (e.g., Ollama, OpenAI-compatible API) as a fallback classifier. |
+
+---
+
+## 🔌 How Does It Connect to Your Tools?
+
+Brainmaster uses the **MCP (Model Context Protocol)** standard. Think of MCP as a universal plug adapter for AI tools:
+
+1. You run a service (e.g., a simulation backend, a file processor, a database API) that exposes an `/mcp` endpoint.
+2. You tell Brainmaster the address of that endpoint via an environment variable (e.g., `MCP_EP=http://localhost:9000`).
+3. Brainmaster automatically discovers all available tools from that service and registers them in its internal knowledge graph.
+4. From then on, when you make a request, it knows it can call those tools and will do so when appropriate.
+
+No manual wiring, no code changes needed on your end.
+
+---
+
+## 🧩 Key Concepts in Simple Terms
+
+| Technical Term | Plain English Meaning |
+|----------------|-----------------------|
+| **Brain** | The central orchestrator — reads, thinks, remembers, and acts |
+| **Graph** | A map of everything the brain knows: your files, goals, history, and tools — all connected |
+| **Pathway / Case** | A specific type of task the brain knows how to handle (e.g., start a simulation, upload a file, answer a question) |
+| **Goal** | What you are trying to achieve; the brain creates a goal node and tracks progress toward it |
+| **Short-term memory** | The last ~30 messages in your current conversation — like working memory |
+| **Long-term memory** | Everything stored from previous sessions: parameters, files, environments, methods |
+| **MCP Tool / Action** | A callable function exposed by a connected service — the brain's "hands" |
+| **Simulation** | A computational run of your configured physics/logic environment; results are scored against your goal |
+| **Thalamus** | The entry point / router — receives your message and directs it to the right handler |
+| **Classification** | The step where the brain decides what type of request you made |
+
+---
+
 # brn — Brain Graph & Orchestration
 
 The **brn** package provides the Brain graph system: goal classification, long/short-term memory, relay-case execution, and simulation orchestration. It sits between the **Thalamus** (orchestrator) and domain managers (Guard, QBrain, etc.).
