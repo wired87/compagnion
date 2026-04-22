@@ -1,0 +1,136 @@
+{
+  "timestamp_utc": "2026-02-28T10:12:57.581306Z",
+  "user_id": "test_user_1",
+  "summary": {
+    "total_queries": 6,
+    "executed": 0,
+    "need_data": 0,
+    "errors": 6,
+    "avg_duration_ms": 0,
+    "overall_status": "failure"
+  },
+  "case_struct": [
+    {
+      "case": "SET_PARAM",
+      "desc": "Create or update a simulation parameter.",
+      "req_struct": {
+        "data": {
+          "name": "string",
+          "param_type": "string",
+          "description": "string"
+        }
+      },
+      "out_struct": {
+        "status": "string",
+        "param_id": "string"
+      }
+    },
+    {
+      "case": "SET_ENV",
+      "desc": "Create or update environment settings.",
+      "req_struct": {
+        "data": {
+          "id": "string",
+          "description": "string"
+        }
+      },
+      "out_struct": {
+        "status": "string"
+      }
+    },
+    {
+      "case": "SET_METHOD",
+      "desc": "Register a computational method.",
+      "req_struct": {
+        "data": {
+          "equation": "string",
+          "description": "string"
+        }
+      },
+      "out_struct": {
+        "status": "string",
+        "method_id": "string"
+      }
+    }
+  ],
+  "qa_pairs": [
+    {
+      "index": 1,
+      "query": "create a parameter",
+      "payload": {},
+      "status": "error",
+      "goal_case": "",
+      "duration_ms": 0,
+      "missing_fields": [],
+      "next_message": "Execution failed.",
+      "execution_debug": {},
+      "error": "('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577420::614c5933 cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577420::614c5933', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577420::614c5933', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577420::614c5933', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577420::614c5933', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577420::614c5933', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 257, in add_edge\n    self.h_entry(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 170, in h_entry\n    raise ValueError(\"Invalid admin_data!!!!\", id, attrs)\nValueError: ('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577420::614c5933', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577420::614c5933', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577420::614c5933', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\test.py\", line 141, in _run_single\n    result = await brain.execute_or_ask(query, user_payload=payload)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 420, in execute_or_ask\n    self.ingest_input(user_query, content_type=\"text\", request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 216, in ingest_input\n    node_id = self._add_short_term(role=\"user\", message=content, request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 154, in _add_short_term\n    self._add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 111, in _add_edge\n    self.add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 267, in add_edge\n    raise ValueError(f\"Skipping link src: {src} -> trgt: {trt} cause:\", e, attrs)\nValueError: ('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577420::614c5933 cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577420::614c5933', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577420::614c5933', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577420::614c5933', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577420::614c5933', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577420::614c5933', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n"
+    },
+    {
+      "index": 2,
+      "query": "name: alpha",
+      "payload": {},
+      "status": "error",
+      "goal_case": "",
+      "duration_ms": 0,
+      "missing_fields": [],
+      "next_message": "Execution failed.",
+      "execution_debug": {},
+      "error": "('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577471::0fafe192 cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577471::0fafe192', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577471::0fafe192', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577471::0fafe192', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577471::0fafe192', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577471::0fafe192', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 257, in add_edge\n    self.h_entry(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 170, in h_entry\n    raise ValueError(\"Invalid admin_data!!!!\", id, attrs)\nValueError: ('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577471::0fafe192', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577471::0fafe192', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577471::0fafe192', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\test.py\", line 141, in _run_single\n    result = await brain.execute_or_ask(query, user_payload=payload)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 420, in execute_or_ask\n    self.ingest_input(user_query, content_type=\"text\", request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 216, in ingest_input\n    node_id = self._add_short_term(role=\"user\", message=content, request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 154, in _add_short_term\n    self._add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 111, in _add_edge\n    self.add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 267, in add_edge\n    raise ValueError(f\"Skipping link src: {src} -> trgt: {trt} cause:\", e, attrs)\nValueError: ('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577471::0fafe192 cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577471::0fafe192', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577471::0fafe192', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577471::0fafe192', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577471::0fafe192', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577471::0fafe192', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n"
+    },
+    {
+      "index": 3,
+      "query": "param_type: float",
+      "payload": {},
+      "status": "error",
+      "goal_case": "",
+      "duration_ms": 0,
+      "missing_fields": [],
+      "next_message": "Execution failed.",
+      "execution_debug": {},
+      "error": "('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577490::ba599848 cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577490::ba599848', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577490::ba599848', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577490::ba599848', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577490::ba599848', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577490::ba599848', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 257, in add_edge\n    self.h_entry(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 170, in h_entry\n    raise ValueError(\"Invalid admin_data!!!!\", id, attrs)\nValueError: ('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577490::ba599848', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577490::ba599848', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577490::ba599848', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\test.py\", line 141, in _run_single\n    result = await brain.execute_or_ask(query, user_payload=payload)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 420, in execute_or_ask\n    self.ingest_input(user_query, content_type=\"text\", request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 216, in ingest_input\n    node_id = self._add_short_term(role=\"user\", message=content, request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 154, in _add_short_term\n    self._add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 111, in _add_edge\n    self.add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 267, in add_edge\n    raise ValueError(f\"Skipping link src: {src} -> trgt: {trt} cause:\", e, attrs)\nValueError: ('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577490::ba599848 cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577490::ba599848', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577490::ba599848', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577490::ba599848', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577490::ba599848', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577490::ba599848', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n"
+    },
+    {
+      "index": 4,
+      "query": "description: learning rate for optimizer",
+      "payload": {},
+      "status": "error",
+      "goal_case": "",
+      "duration_ms": 0,
+      "missing_fields": [],
+      "next_message": "Execution failed.",
+      "execution_debug": {},
+      "error": "('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577503::050cdb8c cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577503::050cdb8c', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577503::050cdb8c', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577503::050cdb8c', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577503::050cdb8c', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577503::050cdb8c', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 257, in add_edge\n    self.h_entry(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 170, in h_entry\n    raise ValueError(\"Invalid admin_data!!!!\", id, attrs)\nValueError: ('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577503::050cdb8c', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577503::050cdb8c', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577503::050cdb8c', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\test.py\", line 141, in _run_single\n    result = await brain.execute_or_ask(query, user_payload=payload)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 420, in execute_or_ask\n    self.ingest_input(user_query, content_type=\"text\", request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 216, in ingest_input\n    node_id = self._add_short_term(role=\"user\", message=content, request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 154, in _add_short_term\n    self._add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 111, in _add_edge\n    self.add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 267, in add_edge\n    raise ValueError(f\"Skipping link src: {src} -> trgt: {trt} cause:\", e, attrs)\nValueError: ('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577503::050cdb8c cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577503::050cdb8c', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577503::050cdb8c', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577503::050cdb8c', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577503::050cdb8c', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577503::050cdb8c', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n"
+    },
+    {
+      "index": 5,
+      "query": "create env",
+      "payload": {
+        "id": "env_test_1",
+        "description": "test environment"
+      },
+      "status": "error",
+      "goal_case": "",
+      "duration_ms": 0,
+      "missing_fields": [],
+      "next_message": "Execution failed.",
+      "execution_debug": {},
+      "error": "('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577542::75b5f995 cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577542::75b5f995', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577542::75b5f995', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577542::75b5f995', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577542::75b5f995', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577542::75b5f995', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 257, in add_edge\n    self.h_entry(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 170, in h_entry\n    raise ValueError(\"Invalid admin_data!!!!\", id, attrs)\nValueError: ('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577542::75b5f995', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577542::75b5f995', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577542::75b5f995', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\test.py\", line 141, in _run_single\n    result = await brain.execute_or_ask(query, user_payload=payload)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 420, in execute_or_ask\n    self.ingest_input(user_query, content_type=\"text\", request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 216, in ingest_input\n    node_id = self._add_short_term(role=\"user\", message=content, request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 154, in _add_short_term\n    self._add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 111, in _add_edge\n    self.add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 267, in add_edge\n    raise ValueError(f\"Skipping link src: {src} -> trgt: {trt} cause:\", e, attrs)\nValueError: ('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577542::75b5f995 cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577542::75b5f995', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577542::75b5f995', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577542::75b5f995', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577542::75b5f995', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577542::75b5f995', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n"
+    },
+    {
+      "index": 6,
+      "query": "add a method",
+      "payload": {
+        "equation": "y=x+1",
+        "description": "simple linear rule"
+      },
+      "status": "error",
+      "goal_case": "",
+      "duration_ms": 0,
+      "missing_fields": [],
+      "next_message": "Execution failed.",
+      "execution_debug": {},
+      "error": "('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577554::f450588b cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577554::f450588b', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577554::f450588b', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577554::f450588b', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577554::f450588b', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577554::f450588b', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 257, in add_edge\n    self.h_entry(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 170, in h_entry\n    raise ValueError(\"Invalid admin_data!!!!\", id, attrs)\nValueError: ('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577554::f450588b', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577554::f450588b', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577554::f450588b', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\test.py\", line 141, in _run_single\n    result = await brain.execute_or_ask(query, user_payload=payload)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 420, in execute_or_ask\n    self.ingest_input(user_query, content_type=\"text\", request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 216, in ingest_input\n    node_id = self._add_short_term(role=\"user\", message=content, request_id=request_id)\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 154, in _add_short_term\n    self._add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\brain.py\", line 111, in _add_edge\n    self.add_edge(\n  File \"C:\\Users\\bestb\\PycharmProjects\\BestBrain\\graph\\local_graph_utils.py\", line 267, in add_edge\n    raise ValueError(f\"Skipping link src: {src} -> trgt: {trt} cause:\", e, attrs)\nValueError: ('Skipping link src: USER::test_user_1 -> trgt: STS::test_user_1::1772273577554::f450588b cause:', ValueError('Invalid admin_data!!!!', 'USER::test_user_1_derived_from_STS::test_user_1::1772273577554::f450588b', {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577554::f450588b', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577554::f450588b', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'}), {'rel': 'derived_from', 'src_layer': 'USER', 'trgt_layer': 'SHORT_TERM_STORAGE', 'src': 'USER::test_user_1', 'trgt': 'STS::test_user_1::1772273577554::f450588b', 'eid': 'USER::test_user_1_derived_from_STS::test_user_1::1772273577554::f450588b', 'tid': 0, 'color': None, 'type': 'USER_derived_from_SHORT_TERM_STORAGE'})\n"
+    }
+  ]
+}

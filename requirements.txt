@@ -1,0 +1,6 @@
+# Core project deps (add existing project deps here if any)
+# Routes / Thalamus entry (FastMCP + FastAPI)
+fastmcp>=3.0
+fastapi>=0.115
+uvicorn>=0.32
+duckdb
